@@ -1,0 +1,27 @@
+
+loading_ui.png
+size: 512,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+inner_circle
+  rotate: false
+  xy: 168, 57
+  size: 115, 115
+  orig: 115, 115
+  offset: 0, 0
+  index: -1
+loading_bar
+  rotate: false
+  xy: 2, 2
+  size: 4, 4
+  orig: 4, 4
+  offset: 0, 0
+  index: -1
+outer_circle
+  rotate: false
+  xy: 2, 8
+  size: 164, 164
+  orig: 164, 164
+  offset: 0, 0
+  index: -1
