@@ -21,6 +21,7 @@ public class DesktopLauncher {
 			settings.debug = false;
 			
 			TexturePacker.process(settings, "assets/images/loading", "../android/assets/images/startup", "loading_ui");
+			TexturePacker.process(settings, "assets/images/gui", "../android/assets/images/gui", "gui_ui");
 		}
 		
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();

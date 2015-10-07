@@ -27,42 +27,39 @@ public class FontHandler implements Disposable {
 	
 	private static GlyphLayout layout;
 	
+	private boolean arePreFontsLoaded;
+	private boolean areFontsLoaded;
+	
 	private FontHandler() {
 		params = new FreeTypeFontParameter();
 		layout = new GlyphLayout();
 	}
 	
-//	AssetHandler.getInstance().getManager().load("fonts/" + EnumFontType.REGULAR.getFontName(), FreeTypeFontGenerator.class);
-	
-//	regularGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/" + EnumFontType.REGULAR.getFontName()));
-//	boldGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/" + EnumFontType.BOLD.getFontName()));
-//	italicGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/" + EnumFontType.ITALIC.getFontName()));
-//	boldItalicGenerator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/" + EnumFontType.BOLD_ITALIC.getFontName()));
-//	params = new FreeTypeFontParameter();
-//	layout = new GlyphLayout();
-	
-	public static void init() {
+	public static FontHandler preInit() {
 		if (instance == null) {
 			instance = new FontHandler();
 		}
+		return instance;
 	}
 	
 	public static FontHandler getInstance() {
-	if (instance == null) {
-		init();
+		return preInit();
 	}
-	return instance;
-}
 	
 	public void loadPreFonts() {
+		if (arePreFontsLoaded) return;
+		
 		FileHandleResolver resolver = new InternalFileHandleResolver();
 		AssetHandler.getInstance().getManager().setLoader(FreeTypeFontGenerator.class, new FreeTypeFontGeneratorLoader(resolver));
 		AssetHandler.getInstance().getManager().setLoader(BitmapFont.class, ".ttf", new FreetypeFontLoader(resolver));
 		
 		AssetHandler.getInstance().getManager().load("fonts/" + EnumFontType.REGULAR.getFontName(), FreeTypeFontGenerator.class);
+		arePreFontsLoaded = true;
 	}
 	
 	public void initPreFonts() {
+		if (!arePreFontsLoaded) return;
+		
 		regularGenerator = AssetHandler.getInstance().getManager().get("fonts/" + EnumFontType.REGULAR.getFontName(), FreeTypeFontGenerator.class);
 		
 		regular12 = generateFont(EnumFontType.REGULAR, 12);
@@ -70,17 +67,30 @@ public class FontHandler implements Disposable {
 	}
 	
 	public void loadFonts() {
+		if (areFontsLoaded) return;
+		
 		AssetHandler.getInstance().getManager().load("fonts/" + EnumFontType.BOLD.getFontName(), FreeTypeFontGenerator.class);
 		AssetHandler.getInstance().getManager().load("fonts/" + EnumFontType.ITALIC.getFontName(), FreeTypeFontGenerator.class);
 		AssetHandler.getInstance().getManager().load("fonts/" + EnumFontType.BOLD_ITALIC.getFontName(), FreeTypeFontGenerator.class);
+		areFontsLoaded = true;
 	}
 	
 	public void initFonts() {
+		if (!areFontsLoaded) return;
+		
 		boldGenerator = AssetHandler.getInstance().getManager().get("fonts/" + EnumFontType.BOLD.getFontName(), FreeTypeFontGenerator.class);
 		italicGenerator = AssetHandler.getInstance().getManager().get("fonts/" + EnumFontType.ITALIC.getFontName(), FreeTypeFontGenerator.class);
 		boldItalicGenerator = AssetHandler.getInstance().getManager().get("fonts/" + EnumFontType.BOLD_ITALIC.getFontName(), FreeTypeFontGenerator.class);
 		
 		regular72 = generateFont(EnumFontType.REGULAR, 72);
+	}
+	
+	public boolean areFontsLoaded() {
+		return areFontsLoaded;
+	}
+	
+	public boolean arePreFontsLoaded() {
+		return arePreFontsLoaded;
 	}
 	
 	private BitmapFont generateFont(EnumFontType font, int fontSize) {

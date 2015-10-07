@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetDescriptor;
 import com.badlogic.gdx.assets.AssetErrorListener;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Disposable;
 
 public class AssetHandler implements Disposable, AssetErrorListener {
@@ -18,24 +17,20 @@ public class AssetHandler implements Disposable, AssetErrorListener {
 		manager.setErrorListener(this);
 	}
 	
-	public static AssetHandler getInstance() {
+	public static AssetHandler preInit() {
 		if (instance == null) {
 			instance = new AssetHandler();
 		}
 		return instance;
 	}
 	
-	public void loadAllAssets(Label infoLabel) {
-		infoLabel.setText("Loading fonts...");
+	public static AssetHandler getInstance() {
+		return preInit();
+	}
+	
+	public void loadAllAssets() {
 		FontHandler.getInstance().loadFonts();
-		
-		infoLabel.setText("Loading images...");
-		ImageLoader.loadImages();
-		
-		infoLabel.setText("Loading music and sounds...");
-		//blarg
-		
-		infoLabel.setText("Done!");
+		ImageLoader.getInstance().loadImages();
 	}
 	
 	public AssetManager getManager() {

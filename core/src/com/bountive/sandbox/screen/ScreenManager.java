@@ -1,6 +1,8 @@
 package com.bountive.sandbox.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.bountive.sandbox.SandBox;
 import com.bountive.sandbox.screen.transitions.ITransition;
 import com.bountive.sandbox.screen.transitions.TransitionManager;
@@ -14,7 +16,7 @@ public class ScreenManager {
 		setCurrentScreen(startingScreen);
 	}
 	
-	public static void init(AbstractScreen startingScreen) {
+	public static void preInit(AbstractScreen startingScreen) {
 		instance = new ScreenManager(startingScreen);
 	}
 	
@@ -23,7 +25,7 @@ public class ScreenManager {
 	 */
 	public static ScreenManager getInstance(SandBox gameInstance) {
 		if (instance == null) {
-			init(new ScreenLoading(gameInstance));
+			preInit(new ScreenLoading(gameInstance));
 		}
 		return instance;
 	}
@@ -99,6 +101,17 @@ public class ScreenManager {
 		else {
 			TransitionManager.getInstance().startTransition(currentScreen, newScreen, transition);
 		}
+	}
+	
+	public static Container<Actor> createContainer(Actor actor, float originX, float originY, float rotation, float scaleXY) {
+		Container<Actor> wrapper = new Container<Actor>(actor);
+		
+		wrapper.setTransform(true);
+		wrapper.setOrigin(originX, originY);
+		wrapper.setRotation(rotation);
+		wrapper.setScale(scaleXY);
+		
+		return wrapper;
 	}
 	
 	/**

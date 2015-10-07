@@ -6,7 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.bountive.sandbox.resources.AssetHandler;
 import com.bountive.sandbox.resources.FontHandler;
-import com.bountive.sandbox.screen.ScreenLoading;
 import com.bountive.sandbox.screen.ScreenManager;
 
 public class SandBox extends Game {
@@ -23,8 +22,7 @@ public class SandBox extends Game {
 	public void create() {
 		Gdx.app.setLogLevel(Application.LOG_DEBUG);
 		batch = new SpriteBatch();
-		FontHandler.init();
-		ScreenManager.init(new ScreenLoading(gameInstance));
+		InitHandler.preInit(gameInstance);
 	}
 	
 	@Override
@@ -32,6 +30,7 @@ public class SandBox extends Game {
 		ScreenManager.getInstance(gameInstance).dispose();
 		FontHandler.getInstance().dispose();
 		AssetHandler.getInstance().dispose();
+		batch.dispose();
 	}
 	
 	@Override
