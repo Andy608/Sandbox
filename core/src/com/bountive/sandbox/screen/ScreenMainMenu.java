@@ -3,7 +3,9 @@ package com.bountive.sandbox.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -20,7 +22,10 @@ public class ScreenMainMenu extends AbstractScreen {
 	
 	private Viewport view;
 	
-	private TextButton testButton;
+	private Container<Actor> singlePlayerButton;
+	private Container<Actor> multiplayerButton;
+	private Container<Actor> optionsButton;
+	private Container<Actor> exitButton;
 	
 	public ScreenMainMenu(SandBox instance) {
 		super(instance);
@@ -77,20 +82,39 @@ public class ScreenMainMenu extends AbstractScreen {
 	
 	private void buildStage() {
 		Gdx.input.setInputProcessor(stage);
-		stage.setDebugAll(false);
+		stage.setDebugAll(true);
 		stage.clear();
 		screenStack = new Stack();
 		stage.addActor(screenStack);
 		screenStack.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		screenStack.add(buildTestButton());
+		screenStack.add(buildButtons());
 	}
 	
-	private Table buildTestButton() {
+	private Table buildButtons() {
 		Table layer = new Table();
 		
-		testButton = new TextButton("This is a test! Derp! :3", ImageLoader.GUISKIN, "button_style");
-		layer.add(ScreenManager.createContainer(testButton, testButton.getPrefWidth() / 2.0f, testButton.getPrefHeight() / 2.0f, 0.0f, 1.0f));
+		singlePlayerButton = createMenuButton("Singleplayer", 0f, 1f);
+		multiplayerButton = createMenuButton("Multiplayer", 0f, 1f).padTop(10);
+		optionsButton = createMenuButton("Options", 0f, 1f).padTop(10);
+		exitButton = createMenuButton("Exit", 0f, 1f).padTop(10);
+		
+		layer.left();
+		layer.add(singlePlayerButton).row();
+		layer.add(multiplayerButton).row();
+		layer.add(optionsButton).row();
+		layer.add(exitButton).row();
+		
+		System.out.println(singlePlayerButton.getWidth());
+		
+		layer.padTop(Gdx.graphics.getHeight() / 4f);
+		
+//		layer.add(ScreenManager.createContainer(singlePlayerButton, singlePlayerButton.getPrefWidth() / 2.0f, singlePlayerButton.getPrefHeight() / 2.0f, 0.0f, 1.0f).width(301));
 		return layer;
+	}
+	
+	private Container<Actor> createMenuButton(String text, float rotation, float scale) {
+		TextButton b = new TextButton(text, ImageLoader.GUISKIN, "button_style");
+		return ScreenManager.createContainer(b, b.getPrefWidth() / 2.0f, b.getPrefHeight() / 2.0f, rotation, scale).width(300);
 	}
 	
 	@Override

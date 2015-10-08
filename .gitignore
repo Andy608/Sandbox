@@ -1,6 +1,7 @@
 .gradle/*
 .settings/*
-bin/*
+desktop/bin/*
+android/bin/*
 build/*
 eclipse/*
 gradle/*

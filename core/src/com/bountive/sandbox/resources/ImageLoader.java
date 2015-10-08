@@ -36,6 +36,8 @@ public class ImageLoader implements Disposable {
 		if (areTexturesLoaded) return;
 		System.out.println("Binding images!");
 		
+		
+		//TODO:MOVE SKIN CREATION SOMEWHERE ELSE
 		GUISKIN = new Skin(AssetHandler.getInstance().getManager().get(ResourcePaths.GUI_UI_ATLAS, TextureAtlas.class));
 		
 		TextButtonStyle style = new TextButtonStyle();
@@ -44,10 +46,9 @@ public class ImageLoader implements Disposable {
 		style.down = GUISKIN.getDrawable("button_pressed");
 		style.font = FontHandler.regular24;
 		style.fontColor = Color.WHITE;
-		//TODO:PICK COOL TEXT COLOR WHEN HOVERED (I like blue for background and yellow for text)
-//		style.overFontColor = new Color(0x80 / 255f, 0x78 / 255f, 0x5C / 255f, 1.0f);
-		style.overFontColor = Color.BLACK;
+		style.overFontColor = new Color(1f, 1f, 0x9F / 255f, 1f);
 		GUISKIN.add("button_style", style);
+		///////////////////////////////////////////////////
 		
 		filterImage(GUISKIN.getAtlas(), TextureFilter.Linear, TextureFilter.Linear);
 		
