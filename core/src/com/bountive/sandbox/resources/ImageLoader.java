@@ -60,6 +60,10 @@ public class ImageLoader implements Disposable {
 			t.setFilter(minFilter, magFilter);
 		}
 	}
+	
+	public static void filterImage(Texture a, TextureFilter minFilter, TextureFilter magFilter) {
+		a.setFilter(minFilter, magFilter);
+	}
 
 	@Override
 	public void dispose() {

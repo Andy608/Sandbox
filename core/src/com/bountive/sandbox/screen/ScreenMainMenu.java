@@ -3,11 +3,10 @@ package com.bountive.sandbox.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
-import com.badlogic.gdx.scenes.scene2d.ui.Stack;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
@@ -18,7 +17,6 @@ import com.bountive.sandbox.resources.ImageLoader;
 public class ScreenMainMenu extends AbstractScreen {
 	
 	private Stage stage;
-	private Stack screenStack;
 	
 	private Viewport view;
 	
@@ -76,40 +74,27 @@ public class ScreenMainMenu extends AbstractScreen {
 		
 		stage.getViewport().update(width, height, true);
 		
-		screenStack.setSize(stage.getWidth(), stage.getHeight());
-		screenStack.invalidate();
+		singlePlayerButton.setX(MathUtils.round((width - singlePlayerButton.getWidth()) / 2));
+		singlePlayerButton.setY(MathUtils.round((height - singlePlayerButton.getHeight()) / 2));
 	}
 	
 	private void buildStage() {
 		Gdx.input.setInputProcessor(stage);
-		stage.setDebugAll(true);
+		stage.setDebugAll(false);
 		stage.clear();
-		screenStack = new Stack();
-		stage.addActor(screenStack);
-		screenStack.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		screenStack.add(buildButtons());
+		buildButtons();
 	}
 	
-	private Table buildButtons() {
-		Table layer = new Table();
-		
+	private void buildButtons() {
 		singlePlayerButton = createMenuButton("Singleplayer", 0f, 1f);
-		multiplayerButton = createMenuButton("Multiplayer", 0f, 1f).padTop(10);
-		optionsButton = createMenuButton("Options", 0f, 1f).padTop(10);
-		exitButton = createMenuButton("Exit", 0f, 1f).padTop(10);
+		multiplayerButton = createMenuButton("Multiplayer", 0f, 1f);
+		optionsButton = createMenuButton("Options", 0f, 1f);
+		exitButton = createMenuButton("Exit", 0f, 1f);
 		
-		layer.left();
-		layer.add(singlePlayerButton).row();
-		layer.add(multiplayerButton).row();
-		layer.add(optionsButton).row();
-		layer.add(exitButton).row();
-		
-		System.out.println(singlePlayerButton.getWidth());
-		
-		layer.padTop(Gdx.graphics.getHeight() / 4f);
-		
-//		layer.add(ScreenManager.createContainer(singlePlayerButton, singlePlayerButton.getPrefWidth() / 2.0f, singlePlayerButton.getPrefHeight() / 2.0f, 0.0f, 1.0f).width(301));
-		return layer;
+		stage.addActor(singlePlayerButton);
+		stage.addActor(multiplayerButton);
+		stage.addActor(optionsButton);
+		stage.addActor(exitButton);
 	}
 	
 	private Container<Actor> createMenuButton(String text, float rotation, float scale) {
